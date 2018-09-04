@@ -135,13 +135,14 @@ int main() {
         //     area = max(area, Area(poly[i], poly[j], poly[k]));
         // }
         // dbg(area);
-        ld area = 0;
+        area = 0;
         n = poly.size();
         FOR (i, 0, n) FOR (j, i + 1, n) {
             int l = j + 1, r = n - 1;
-            while (true) {
-                int mid1 = (2 * l + r) / 3;
-                int mid2 = (l + 2 * r) / 3;
+            while (l < r) {
+                int mid1 = max((2 * l + r) / 3, l);
+                int mid2 = min((l + 2 * r) / 3, r);
+                assert (mid1 >= l && mid2 <= r);
                 if (Area(poly[i], poly[j], poly[mid1]) < Area(poly[i], poly[j], poly[mid2])) {
                     if (mid1 == l) break;
                     l = mid1;
@@ -151,7 +152,8 @@ int main() {
                     r = mid2;
                 }
             }
-            FOR (k, l, r + 1) area = max(area, Area(poly[i], poly[j], poly[k]));
+            dbg(i, j, l, r);
+            FOR (k, j + 1, n) area = max(area, Area(poly[i], poly[j], poly[k]));
         }
         printf("%.9f\n", area);
     }
